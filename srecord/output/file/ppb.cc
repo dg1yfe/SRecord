@@ -128,12 +128,14 @@ srecord::output_file_ppb::format_name(void)
 
 
 void
-srecord::output_file_ppb::put_bin_4be(unsigned long value)
+srecord::output_file_ppb::put_bin_4be(unsigned long value, unsigned char &chksum)
 {
-    put_char(value >> 24);
-    put_char(value >> 16);
-    put_char(value >> 8);
-    put_char(value);
+    for (int n = 24; n >= 0; n -= 8)
+    {
+        unsigned char c = value >> n;
+        put_char(c);
+        chksum += c;
+    }
 }
 
 
@@ -145,9 +147,9 @@ srecord::output_file_ppb::packet(unsigned long address,
     enum { CSLEN = 1024 };
 
     put_char(SOH);
-    put_bin_4be(data_size);
-    put_bin_4be(address);
     unsigned char chksum = 0;
+    put_bin_4be(data_size, chksum);
+    put_bin_4be(address, chksum);
     for (size_t j = 0; j < data_size; ++j)
     {
         if (j > 0 && (j % CSLEN) == 0)

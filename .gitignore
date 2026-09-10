@@ -22,3 +22,12 @@
 
 # user files
 /tags
+
+# Eclipse files
+/.autotools
+/.cproject
+/.project
+/.settings/
+
+# macOS files
+.DS_Store

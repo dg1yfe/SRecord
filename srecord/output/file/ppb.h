@@ -117,9 +117,11 @@ private:
 
     /**
       * The put_bin_4be method is used to write out 4 binary bytes of a
-      * 32-bit value, big endian ordering.
+      * 32-bit value, big endian ordering.  The bytes are added to the
+      * running packet checksum, because the packet header is included
+      * in the checksum.
       */
-    void put_bin_4be(unsigned long value);
+    void put_bin_4be(unsigned long value, unsigned char &chksum);
 
     /**
       * The default constructor.  Do not use.
